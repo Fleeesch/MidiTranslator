@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>c:\root\int\ide\intellij\proj\java\MidiTranslator\out\artifacts\Main_jar\Main.jar</jar>
+  <outfile>c:\root\int\ide\intellij\proj\java\MidiTranslator\out\artifacts\Main_jar\Midi Translator.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir>.</chdir>
+  <priority>high</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <stayAlive>false</stayAlive>
+  <restartOnCrash>false</restartOnCrash>
+  <manifest></manifest>
+  <icon>c:\root\int\ide\intellij\proj\java\MidiTranslator\res\img\icon.ico</icon>
+  <singleInstance>
+    <mutexName>Midi Translator</mutexName>
+    <windowTitle></windowTitle>
+  </singleInstance>
+  <jre>
+    <path>c:\root\int\ide\intellij\sdk\openjdk-18.0.2\</path>
+    <bundledJre64Bit>true</bundledJre64Bit>
+    <bundledJreAsFallback>false</bundledJreAsFallback>
+    <minVersion></minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+    <runtimeBits>64/32</runtimeBits>
+  </jre>
+</launch4jConfig>
