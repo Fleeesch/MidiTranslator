@@ -2,12 +2,12 @@ package com.fleeesch.miditranslator.element.virtual.controller.display;
 
 import com.fleeesch.miditranslator.data.external.DataSet;
 import com.fleeesch.miditranslator.data.external.fx.FxDataSet;
+import com.fleeesch.miditranslator.data.lookup.midi.MidiAddress;
 import com.fleeesch.miditranslator.data.parameter.Parameter;
 import com.fleeesch.miditranslator.data.parameter.settings.Settings;
 import com.fleeesch.miditranslator.device.software.DAW;
 import com.fleeesch.miditranslator.element.output.display.fp8.FP8DisplaySet;
 import com.fleeesch.miditranslator.functions.string.Text;
-import com.fleeesch.miditranslator.data.lookup.midi.MidiAddress;
 
 import javax.swing.*;
 import java.awt.event.ActionListener;
@@ -170,23 +170,43 @@ public class FP8DisplayController extends DisplayController {
 
         }
 
-
     }
 
     //************************************************************
     //      Method : Change Menu
     //************************************************************
 
-    public void changeMenu(int pMenu) {
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Change Menu
 
-        if (menu == pMenu) return;
+    private void changeMenu(int pMenu, boolean force) {
 
-        for(int i = 2; i < 8; i++) displaySet.displays.get(i).clearDisplay();
+        if (!force && menu == pMenu) return;
+
+        for (int i = 2; i < 8; i++) displaySet.displays.get(i).clearDisplay();
 
         displaySet.setDisplayMode(3, true); // clear upper row
 
         menu = pMenu;
 
+
+    }
+
+    // * * * * * * * * * * * * * * * * * * * * * * * * * * *
+    // Change Menu (ignore if the same)i
+
+    public void changeMenu(int pMenu) {
+
+        changeMenu(pMenu, false);
+    }
+
+    //************************************************************
+    //      Method : Reload Menu
+    //************************************************************
+
+    public void reloadMenu() {
+
+        changeMenu(menu, true);
 
     }
 
@@ -199,8 +219,8 @@ public class FP8DisplayController extends DisplayController {
 
         int chan = (midiBank + 1 + bankExtender * 8);
 
-        displaySet.displays.get(0).print(0,0x04,"CH");
-        displaySet.displays.get(1).print(0,0x04,chan + "");
+        displaySet.displays.get(0).print(0, 0x04, "CH");
+        displaySet.displays.get(1).print(0, 0x04, chan + "");
 
         for (int i = 0; i < 8; i++) {
 
@@ -234,7 +254,7 @@ public class FP8DisplayController extends DisplayController {
         for (int i = 0; i < 8; i++) {
 
             String name = pDataSet.fx.get(pIndex + i).name;
-            String[] lines = Text.splitFixedDimensions(name,  " ", pLineCount, pLineCount, maxCharacters,true);
+            String[] lines = Text.splitFixedDimensions(name, " ", pLineCount, pLineCount, maxCharacters, true);
 
             displaySet.displays.get(i).print(pLineOffset, 0x00, lines);
 
@@ -271,7 +291,7 @@ public class FP8DisplayController extends DisplayController {
 
         if (pStr.length <= 1) {
 
-            String[] print = Text.splitFixedDimensions(pStr[0],  "", 8, 8, maxCharacters, true);
+            String[] print = Text.splitFixedDimensions(pStr[0], "", 8, 8, maxCharacters, true);
 
             for (int i = 0; i < 8; i++) {
 
@@ -287,7 +307,8 @@ public class FP8DisplayController extends DisplayController {
 
         int l = Math.min(pStr.length, 8);
 
-        for (int i = 0; i < l; i++) displaySet.displays.get(i).print(0, 0x04, Text.limitTextLength(pStr[i], maxCharacters));
+        for (int i = 0; i < l; i++)
+            displaySet.displays.get(i).print(0, 0x04, Text.limitTextLength(pStr[i], maxCharacters));
         for (int i = l; i < 8; i++) displaySet.displays.get(i).print(0, 0, " ");
 
     }
@@ -306,7 +327,7 @@ public class FP8DisplayController extends DisplayController {
 
             String name = dawDataSource.trackData.tracks.get(idx + i).name;
 
-            String[] lines = Text.splitFixedDimensions(name,  " ", 4, 4, maxCharacters, true);
+            String[] lines = Text.splitFixedDimensions(name, " ", 4, 4, maxCharacters, true);
 
             displaySet.displays.get(i).print(0, 0, lines);
 

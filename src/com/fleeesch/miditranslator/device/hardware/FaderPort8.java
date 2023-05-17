@@ -248,6 +248,21 @@ public class FaderPort8 extends Device {
 
     }
 
+    //************************************************************
+    //      Method : Update Output Elements
+    //************************************************************
+
+    @Override
+    public void updateOutputElements() {
+
+        // super method
+        super.updateOutputElements();
+
+        // initialize display formatting by reloading the menu
+        displayController.reloadMenu();
+
+    }
+
 
     //************************************************************
     //      Method : Map Hardware
@@ -765,21 +780,21 @@ public class FaderPort8 extends Device {
         new InterpreterDirect("Previous 8 Track");
         VirtualElement.last.addSource(buttonBypass);
         VirtualElement.last.addTarget(ledButtonBypass);
-        VirtualElement.last.addAction(new SendOscOnPress(1,OscAddress.trackSelectRelative,0.5-0.065));
+        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 - 0.065));
 
-        VirtualElement.last.setParameterValue(1,Color.HexToRgbDouble(0x7F3000)[0]);
-        VirtualElement.last.setParameterValue(2,Color.HexToRgbDouble(0x7F3000)[1]);
-        VirtualElement.last.setParameterValue(3,Color.HexToRgbDouble(0x7F3000)[2]);
+        VirtualElement.last.setParameterValue(1, Color.HexToRgbDouble(0x7F3000)[0]);
+        VirtualElement.last.setParameterValue(2, Color.HexToRgbDouble(0x7F3000)[1]);
+        VirtualElement.last.setParameterValue(3, Color.HexToRgbDouble(0x7F3000)[2]);
 
         // --- Next 8 Tracks ---
         new InterpreterDirect("Previous 8 Track");
         VirtualElement.last.addSource(buttonMacro);
         VirtualElement.last.addTarget(ledButtonMacro);
-        VirtualElement.last.addAction(new SendOscOnPress(1,OscAddress.trackSelectRelative,0.5+0.065));
+        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 + 0.065));
 
-        VirtualElement.last.setParameterValue(1,Color.HexToRgbDouble(0x7F3000)[0]);
-        VirtualElement.last.setParameterValue(2,Color.HexToRgbDouble(0x7F3000)[1]);
-        VirtualElement.last.setParameterValue(3,Color.HexToRgbDouble(0x7F3000)[2]);
+        VirtualElement.last.setParameterValue(1, Color.HexToRgbDouble(0x7F3000)[0]);
+        VirtualElement.last.setParameterValue(2, Color.HexToRgbDouble(0x7F3000)[1]);
+        VirtualElement.last.setParameterValue(3, Color.HexToRgbDouble(0x7F3000)[2]);
 
         Condition.clear();
 
@@ -916,17 +931,17 @@ public class FaderPort8 extends Device {
 
 
         // :: Mix
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Mix", faderMode, 1, mixModeBank, buttonSelect, ledButtonSelect, 0x30007F, 0x600030,true);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Mix", faderMode, 1, mixModeBank, buttonSelect, ledButtonSelect, 0x30007F, 0x600030, true);
         // :: Track
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Track", faderMode, 2, trackModeBank, buttonSelect, ledButtonSelect, 0x30007F, 0,true);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Track", faderMode, 2, trackModeBank, buttonSelect, ledButtonSelect, 0x30007F, 0, true);
         // :: Preset
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Preset", faderMode, 5, presetModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0,false);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Preset", faderMode, 5, presetModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0, false);
         // :: FX
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "FX", faderMode, 3, fxModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0,false);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "FX", faderMode, 3, fxModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0, false);
         // :: Free
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Free", faderMode, 0, freeModeBank, buttonSelect, ledButtonSelect, 0x007F30, 0,false);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Free", faderMode, 0, freeModeBank, buttonSelect, ledButtonSelect, 0x007F30, 0, false);
         // :: MIDI
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Midi", faderMode, 4, midiModeBank, buttonSelect, ledButtonSelect, 0x007F30, 0,false);
+        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Midi", faderMode, 4, midiModeBank, buttonSelect, ledButtonSelect, 0x007F30, 0, false);
 
 
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -1021,7 +1036,6 @@ public class FaderPort8 extends Device {
         VirtualElement.last.addSource(buttonMacro);
         VirtualElement.last.addTarget(ledButtonMacro);
         VirtualElement.last.setParameterValue(1, 0.5, 0, 1);
-
 
 
         Condition.clear();
