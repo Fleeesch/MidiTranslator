@@ -40,15 +40,7 @@ public class VElement extends OscListener {
 
         // convert and store message as float
 
-        float f;
-
-        try {
-            f = (float) event.getMessage().getArguments().get(0);
-
-
-        } catch (Exception e) {
-            return;
-        }
+        float f = (float) event.getMessage().getArguments().get(0);
 
         // convert it back to double
         targetElement.handleSoftwareInput(f);

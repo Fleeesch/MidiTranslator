@@ -183,7 +183,7 @@ public class FP8DisplayController extends DisplayController {
 
         if (!force && menu == pMenu) return;
 
-        for (int i = 2; i < 8; i++) displaySet.displays.get(i).clearDisplay();
+        for (int i = 0; i < 8; i++) displaySet.displays.get(i).clearDisplay();
 
         displaySet.setDisplayMode(3, true); // clear upper row
 
