@@ -159,7 +159,7 @@ public class LaunchpadXMacros {
     //      Method : Add Parameter Increment
     //************************************************************
 
-    public static void addTransposeSet(Parameter pParameterTranspose) {
+    public static void addTransposeSet(Parameter pParameterTranspose, Parameter pPrameterRowOffset) {
 
         double[] clr = LaunchpadX.colorWhite;
 
@@ -169,8 +169,8 @@ public class LaunchpadXMacros {
         VirtualElement.last.addSource(buttons.get(1));
         VirtualElement.last.addTarget(ledButtons.get(0));
         VirtualElement.last.addTarget(ledButtons.get(1));
-        VirtualElement.last.addAction(new ParameterIncrement(pParameterTranspose, 6));
-        VirtualElement.last.addAction(new ParameterIncrement(pParameterTranspose, -6));
+        VirtualElement.last.addAction(new ParameterIncrement(pParameterTranspose, 1, pPrameterRowOffset));
+        VirtualElement.last.addAction(new ParameterIncrement(pParameterTranspose, -1, pPrameterRowOffset));
         VirtualElement.last.addAction(new ParameterSet(pParameterTranspose, 0));
         VirtualElement.last.setParameterValue(1, clr[0], clr[1], clr[2]);
 

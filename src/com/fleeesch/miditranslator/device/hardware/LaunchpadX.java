@@ -634,7 +634,7 @@ public class LaunchpadX extends Device {
         mpeBuilder.linkToSettings(mpeBuilderSettings);
 
         // add transpose Buttons
-        LaunchpadXMacros.addTransposeSet(mpeTranspose);
+        LaunchpadXMacros.addTransposeSet(mpeTranspose, mpeRowOffset);
 
         Condition.clear();
 
