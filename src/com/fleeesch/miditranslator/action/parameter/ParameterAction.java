@@ -12,10 +12,11 @@ public abstract class ParameterAction extends Action {
     //      Variables
     //************************************************************
 
-    //* * * * * * * * * * * * * * * * * * * * * * * *
-    //  Public
-
     public final Parameter parameter; // parameter to be manipulated
+
+    protected Parameter parameterLink;
+
+    protected final boolean hasParameterLink;
 
     // multiple values can be used for auto-generated combinations
     final List<Double> setValues = new ArrayList<>();
@@ -23,6 +24,21 @@ public abstract class ParameterAction extends Action {
     //************************************************************
     //      Constructor
     //************************************************************
+
+    //* * * * * * * * * * * * * * * * * * * * * * * *
+    //  Parameter Link
+
+    public ParameterAction(Parameter pActionParameter, double pValDest, Parameter pLinkedParameter) {
+
+        parameter = pActionParameter; // store value
+
+        setValues.add(pValDest); // add value
+
+        parameterLink = pLinkedParameter;
+
+        hasParameterLink = true;
+
+    }
 
     //* * * * * * * * * * * * * * * * * * * * * * * *
     //  Single Value
@@ -33,7 +49,10 @@ public abstract class ParameterAction extends Action {
 
         setValues.add(pValDest); // add value
 
+        hasParameterLink = false;
+
     }
+
 
     //* * * * * * * * * * * * * * * * * * * * * * * *
     //  Multiple Values
@@ -43,6 +62,8 @@ public abstract class ParameterAction extends Action {
         parameter = pActionParameter; // add value
 
         for (double d : pValDest) setValues.add(d); // transfer values
+
+        hasParameterLink = false;
 
     }
 
