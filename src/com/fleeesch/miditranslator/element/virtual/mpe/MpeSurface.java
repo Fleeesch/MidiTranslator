@@ -222,13 +222,14 @@ public class MpeSurface extends VirtualElement {
     //      Method : Transpose
     //************************************************************
 
-    public void transpoeNotes(int pTranspose) {
+    public void transposeNotes(int pTranspose) {
 
         transpose += pTranspose; // incremental transpose adjustment
 
         createTonalSurface(); // create note lookup
 
     }
+
 
     //************************************************************
     //      Method : Set Transpose
