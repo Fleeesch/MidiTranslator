@@ -657,8 +657,7 @@ public class MpeSurface extends VirtualElement {
 
         if (pParameter.name.equals("MPE Transpose")) {
             setTranspose((int) pParameter.get());
-            return;
-        }
+            return;        }
 
 
         if (pParameter.name.equals("MPE Velocity Lock")) {

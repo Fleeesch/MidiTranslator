@@ -121,6 +121,10 @@ public class Gui {
         guiInstance.frame.setMinimumSize(new Dimension(300, 100 + Device.list.size() * 18)); // minimum size to allow window moving
         guiInstance.frame.setIconImage(trayImage); // icon
 
+        // flash gui
+        guiInstance.frame.setVisible(true);
+        guiInstance.frame.setVisible(false);
+
         // add system tray icon / menu
         addSystemTray();
 
