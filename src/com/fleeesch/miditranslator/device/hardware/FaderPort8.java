@@ -259,7 +259,9 @@ public class FaderPort8 extends Device {
         super.updateOutputElements();
 
         // initialize display formatting by reloading the menu
-        displayController.reloadMenu();
+        if (displayController != null) {
+            displayController.reloadMenu();
+        }
 
     }
 
