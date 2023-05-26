@@ -114,16 +114,11 @@ public class Gui {
         guiInstance.printInfoLine("Arrange", Main.deviceDaw.oscPortArrangeIn + " / " + Main.deviceDaw.oscPortArrangeOut, colorWindowTextDim, colorWindowText, 0, 0);
         guiInstance.printInfoLine("Control", Main.deviceDaw.oscPortControlIn + " / " + Main.deviceDaw.oscPortControlOut, colorWindowTextDim, colorWindowText, 0, 0);
 
-
         // frame formatting
         guiInstance.frame.pack(); // no idea what this one does
         guiInstance.frame.setLocationRelativeTo(null); // center frame
         guiInstance.frame.setMinimumSize(new Dimension(300, 100 + Device.list.size() * 18)); // minimum size to allow window moving
         guiInstance.frame.setIconImage(trayImage); // icon
-
-        // flash gui
-        guiInstance.frame.setVisible(true);
-        guiInstance.frame.setVisible(false);
 
         // add system tray icon / menu
         addSystemTray();
