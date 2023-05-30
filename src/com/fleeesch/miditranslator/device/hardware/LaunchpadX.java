@@ -903,6 +903,7 @@ public class LaunchpadX extends Device {
 
         // Track Mute
         LaunchpadXMacros.addFeedbackControlButton("Toggle Track Mute", pads.get(2), ledPads.get(2), 1, OscAddress.trackToggleMute, OscAddress.trackMute + "/0", colorRed);
+
         // Track Solo
         LaunchpadXMacros.addFeedbackControlButton("Toggle Track Solo", pads.get(3), ledPads.get(3), 1, OscAddress.trackToggleSolo, OscAddress.trackSolo + "/0", colorYellow);
 

@@ -189,8 +189,19 @@ public class Midi {
 
             }
 
-            // address input element by midi lookup adress, convert value to 0-1 double
+            // tread 2 byte messages differently
+
+            if (msg.length < 2) {
+
+                // address input element by midi lookup address, convert value to 0-1 double
+                device.handleMidiInput(getLookupAddress(msg[0], 0), msg[1] / 127.0, msg);
+
+                return;
+            }
+
+            // address input element by midi lookup address, convert value to 0-1 double
             device.handleMidiInput(getLookupAddress(msg[0], msg[1]), msg[2] / 127.0, msg);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -367,11 +378,11 @@ public class Midi {
         // get device by name
         MidiDevice[] device = getOutputByName(pName);
 
-            // quit if not found
-            if (device == null) {
-                errorDeviceUnavailable();
-                return true;
-            }
+        // quit if not found
+        if (device == null) {
+            errorDeviceUnavailable();
+            return true;
+        }
 
         try {
 
