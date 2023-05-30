@@ -28,6 +28,7 @@ import com.fleeesch.miditranslator.element.output.led.binary.LedBinary;
 import com.fleeesch.miditranslator.element.output.led.rgb.LedRGBFaderPort;
 import com.fleeesch.miditranslator.element.virtual.VirtualElement;
 import com.fleeesch.miditranslator.element.virtual.controller.display.FP8DisplayController;
+import com.fleeesch.miditranslator.element.virtual.controller.led.LedControllerTrackColor;
 import com.fleeesch.miditranslator.element.virtual.controller.motorfader.MotorFaderController;
 import com.fleeesch.miditranslator.element.virtual.controller.motorfader.control.MfcMulti;
 import com.fleeesch.miditranslator.element.virtual.interpreter.*;
@@ -779,24 +780,42 @@ public class FaderPort8 extends Device {
         // ::: Shift Off :::
 
         // --- Previous 8 Tracks ---
+
         new InterpreterDirect("Previous 8 Track");
         VirtualElement.last.addSource(buttonBypass);
-        VirtualElement.last.addTarget(ledButtonBypass);
         VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 - 0.065));
 
-        VirtualElement.last.setParameterValue(1, Color.HexToRgbDouble(0x7F3000)[0]);
-        VirtualElement.last.setParameterValue(2, Color.HexToRgbDouble(0x7F3000)[1]);
-        VirtualElement.last.setParameterValue(3, Color.HexToRgbDouble(0x7F3000)[2]);
+        Condition.add(bankExtension, 0);
+        new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(0), 1, 0x6A5A39);
+        VirtualElement.last.addTarget(ledButtonBypass);
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+        Condition.clear();
+
+        Condition.add(bankExtension, 1);
+        new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(8), 1, 0x6A5A39);
+        VirtualElement.last.addTarget(ledButtonBypass);
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+        Condition.clear();
+
 
         // --- Next 8 Tracks ---
+
         new InterpreterDirect("Previous 8 Track");
         VirtualElement.last.addSource(buttonMacro);
-        VirtualElement.last.addTarget(ledButtonMacro);
         VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 + 0.065));
 
-        VirtualElement.last.setParameterValue(1, Color.HexToRgbDouble(0x7F3000)[0]);
-        VirtualElement.last.setParameterValue(2, Color.HexToRgbDouble(0x7F3000)[1]);
-        VirtualElement.last.setParameterValue(3, Color.HexToRgbDouble(0x7F3000)[2]);
+        Condition.add(bankExtension, 0);
+        new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(0), 1, 0x6A5A39);
+        VirtualElement.last.addTarget(ledButtonMacro);
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+        Condition.clear();
+
+        Condition.add(bankExtension, 1);
+        new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(8), 1, 0x6A5A39);
+        VirtualElement.last.addTarget(ledButtonMacro);
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+        Condition.clear();
+
 
         // ::: Shift On :::
 

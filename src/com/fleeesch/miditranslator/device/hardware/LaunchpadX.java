@@ -19,6 +19,7 @@ import com.fleeesch.miditranslator.element.output.led.rgb.LedRGBLaunchpad;
 import com.fleeesch.miditranslator.element.virtual.VirtualElement;
 import com.fleeesch.miditranslator.element.virtual.controller.led.LedControllerTrackColor;
 import com.fleeesch.miditranslator.element.virtual.interpreter.InterpreterHold;
+import com.fleeesch.miditranslator.functions.math.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,9 @@ public class LaunchpadX extends Device {
 
     public static double[] colorPink = {1, 0, 1};
     public static final double[] colorPinkLight = {1, 0.3, 1};
+
+    public static final double[] colorDefaultTrack = {1, 0.6, 0.1};
+
 
     //* * * * * * * * * * * * * * * * * * * * * * * *
     //  Output Elements
@@ -569,7 +573,7 @@ public class LaunchpadX extends Device {
         //      Track Color
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-        new LedControllerTrackColor("Track Color", Main.deviceDaw.trackData.tracks.get(0), 1, 0x000000);
+        new LedControllerTrackColor("Track Color", Main.deviceDaw.trackData.tracks.get(0), 1, Color.RgbDoubleToHex(colorDefaultTrack[0],colorDefaultTrack[1],colorDefaultTrack[2]));
         VirtualElement.last.addTarget(ledLogo);
         ((LedControllerTrackColor) VirtualElement.last).setColor();
 
@@ -762,18 +766,22 @@ public class LaunchpadX extends Device {
         Condition.add(view, 3, 2);
 
         // Jog
-        LaunchpadXMacros.addSimpleControlButton("Scroll Left", buttons.get(8), ledButtons.get(8), OscAddress.jogLeft, colorOrangeLight);
-        LaunchpadXMacros.addSimpleControlButton("Scroll Right", buttons.get(9), ledButtons.get(9), OscAddress.jogRight, colorOrangeLight);
+        LaunchpadXMacros.addSimpleControlButton("Scroll Left", buttons.get(10), ledButtons.get(10), OscAddress.jogLeft, colorOrangeLight);
+        LaunchpadXMacros.addSimpleControlButton("Scroll Right", buttons.get(11), ledButtons.get(11), OscAddress.jogRight, colorOrangeLight);
 
         // Track Selection
-        LaunchpadXMacros.addSimpleControlButton("Previous Track", buttons.get(10), ledButtons.get(10), OscAddress.trackSelectPrevious, colorRedLight);
-        LaunchpadXMacros.addSimpleControlButton("Next Track", buttons.get(11), ledButtons.get(11), OscAddress.trackSelectNext, colorRedLight);
+        LaunchpadXMacros.addSimpleControlButtonTrackColor("Previous Track", buttons.get(8), ledButtons.get(8), OscAddress.trackSelectPrevious, colorDefaultTrack, 1);
+        LaunchpadXMacros.addSimpleControlButtonTrackColor("Next Track", buttons.get(9), ledButtons.get(9), OscAddress.trackSelectNext, colorDefaultTrack, 1);
+
+        Condition.clear();
+
+        Condition.add(view, 3, 2);
 
         // Play, Record, Undo, Redo
         LaunchpadXMacros.addSimpleControlButton("Undo", buttons.get(12), ledButtons.get(12), OscAddress.undo, colorOrange);
         LaunchpadXMacros.addSimpleControlButton("Redo", buttons.get(13), ledButtons.get(13), OscAddress.redo, colorOrange);
-        LaunchpadXMacros.addSimpleControlButton("Record", buttons.get(14), ledButtons.get(14), OscAddress.record, colorRed);
-        LaunchpadXMacros.addSimpleControlButton("Play", buttons.get(15), ledButtons.get(15), OscAddress.play, colorWhite);
+        LaunchpadXMacros.addFeedbackControlButton("Record", buttons.get(14), ledButtons.get(14), 1, OscAddress.record, null, colorRed);
+        LaunchpadXMacros.addFeedbackControlButton("Play", buttons.get(15), ledButtons.get(15), 1, OscAddress.play, null, colorWhite);
 
         Condition.clear();
 
@@ -784,8 +792,9 @@ public class LaunchpadX extends Device {
         // Play, Record, Undo, Redo
         LaunchpadXMacros.addSimpleControlButton("Undo", buttons.get(0), ledButtons.get(0), OscAddress.undo, colorOrange);
         LaunchpadXMacros.addSimpleControlButton("Redo", buttons.get(1), ledButtons.get(1), OscAddress.redo, colorOrange);
-        LaunchpadXMacros.addSimpleControlButton("Record", buttons.get(2), ledButtons.get(2), OscAddress.record, colorRed);
-        LaunchpadXMacros.addSimpleControlButton("Play", buttons.get(3), ledButtons.get(3), OscAddress.play, colorWhite);
+        LaunchpadXMacros.addFeedbackControlButton("Record", buttons.get(2), ledButtons.get(2), 1,OscAddress.record, null, colorRed);
+        LaunchpadXMacros.addFeedbackControlButton("Play", buttons.get(3), ledButtons.get(3), 1,OscAddress.play, null, colorWhite);
+
 
         Condition.clear();
 
@@ -848,16 +857,6 @@ public class LaunchpadX extends Device {
         LaunchpadXMacros.addSimpleControlButton("Tap Tempo", pads.get(39), ledPads.get(39), OscAddress.tapTempo, colorWhiteDim);
 
         //:::::::::::::::::::::::
-        //  FX Bypass
-        //:::::::::::::::::::::::
-
-        // Track FX Bypass
-        LaunchpadXMacros.addFeedbackControlButton("Toggle Track FX Bypass", pads.get(30), ledPads.get(30), 1, OscAddress.trackToggleFXBypass, null, colorAmber);
-
-        // Focused FX Bypass
-        LaunchpadXMacros.addFeedbackControlButton("Toggle Focused FX Bypass", pads.get(31), ledPads.get(31), 0, OscAddress.fxToggleBypass, null, colorAmber);
-
-        //:::::::::::::::::::::::
         //  Freezing
         //:::::::::::::::::::::::
 
@@ -897,9 +896,13 @@ public class LaunchpadX extends Device {
         //  Track
         //:::::::::::::::::::::::
 
+        // Dynamic Zoom
+        LaunchpadXMacros.addSimpleControlButtonTrackColor("Dynamic Zoom In", buttons.get(0), ledButtons.get(0), OscAddress.dynamicZoomIn, colorDefaultTrack, 1);
+        LaunchpadXMacros.addSimpleControlButtonTrackColor("Dynamic Zoom Out", buttons.get(1), ledButtons.get(1), OscAddress.dynamicZoomOut, colorDefaultTrack, 1);
+
         // Track Select
-        LaunchpadXMacros.addPressureControlDouble("Select Previous Track", 0, OscAddress.trackSelectRelative, rateMin, rateMax, 0.49, 0.49, OscAddress.trackAddRelative, 0.49, colorAmberLight);
-        LaunchpadXMacros.addPressureControlDouble("Select Next Track", 1, OscAddress.trackSelectRelative, rateMin, rateMax, 0.51, 0.51, OscAddress.trackAddRelative, 0.51, colorAmberLight);
+        LaunchpadXMacros.addPressureControlDoubleTrackColor("Select Previous Track", 0, OscAddress.trackSelectRelative, rateMin, rateMax, 0.49, 0.49, OscAddress.trackAddRelative, 0.49, colorDefaultTrack, 1);
+        LaunchpadXMacros.addPressureControlDoubleTrackColor("Select Next Track", 1, OscAddress.trackSelectRelative, rateMin, rateMax, 0.51, 0.51, OscAddress.trackAddRelative, 0.51, colorDefaultTrack, 1);
 
         // Track Mute
         LaunchpadXMacros.addFeedbackControlButton("Toggle Track Mute", pads.get(2), ledPads.get(2), 1, OscAddress.trackToggleMute, OscAddress.trackMute + "/0", colorRed);
@@ -921,8 +924,8 @@ public class LaunchpadX extends Device {
         //:::::::::::::::::::::::
 
         // Item Select
-        LaunchpadXMacros.addPressureControlDouble("Select Previous Item", 8, OscAddress.itemSelectRelative, rateMin, rateMax, 0.49, 0.49, OscAddress.itemAddRelative, 0.49, colorAmber);
-        LaunchpadXMacros.addPressureControlDouble("Select Next Item", 9, OscAddress.itemSelectRelative, rateMin, rateMax, 0.51, 0.51, OscAddress.itemAddRelative, 0.51, colorAmber);
+        LaunchpadXMacros.addPressureControlDoubleTrackColor("Select Previous Item", 8, OscAddress.itemSelectRelative, rateMin, rateMax, 0.49, 0.49, OscAddress.itemAddRelative, 0.49, colorDefaultTrack, 1);
+        LaunchpadXMacros.addPressureControlDoubleTrackColor("Select Next Item", 9, OscAddress.itemSelectRelative, rateMin, rateMax, 0.51, 0.51, OscAddress.itemAddRelative, 0.51, colorDefaultTrack, 1);
 
         // Item Mute
         LaunchpadXMacros.addSimpleControlButton("Toggle Track Mute", pads.get(10), ledPads.get(10), OscAddress.itemToggleMute, colorRed);
@@ -932,8 +935,8 @@ public class LaunchpadX extends Device {
         //:::::::::::::::::::::::
 
         // Take Select
-        LaunchpadXMacros.addPressureControl("Select Previous Item", 16, OscAddress.takeSelectRelative, rateMin, rateMax, 0.49, 0.49, colorAmber);
-        LaunchpadXMacros.addPressureControl("Select Next Item", 17, OscAddress.takeSelectRelative, rateMin, rateMax, 0.51, 0.51, colorAmber);
+        LaunchpadXMacros.addPressureControlTrackColor("Select Previous Item", 16, OscAddress.takeSelectRelative, rateMin, rateMax, 0.49, 0.49, colorDefaultTrack,1);
+        LaunchpadXMacros.addPressureControlTrackColor("Select Next Item", 17, OscAddress.takeSelectRelative, rateMin, rateMax, 0.51, 0.51, colorDefaultTrack, 1);
 
         // Take Delete / Crop
         LaunchpadXMacros.addHoldControlButton("Take Delete / Crop", pads.get(18), ledPads.get(18), OscAddress.takeRemove, OscAddress.takeCrop, colorRed);

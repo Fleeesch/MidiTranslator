@@ -1,5 +1,6 @@
 package com.fleeesch.miditranslator.device.macros;
 
+import com.fleeesch.miditranslator.Main;
 import com.fleeesch.miditranslator.action.ActionBlind;
 import com.fleeesch.miditranslator.action.midi.SendMidiDirect;
 import com.fleeesch.miditranslator.action.osc.SendOscDirect;
@@ -16,7 +17,9 @@ import com.fleeesch.miditranslator.element.input.InputElement;
 import com.fleeesch.miditranslator.element.output.OutputElement;
 import com.fleeesch.miditranslator.element.virtual.VirtualElement;
 import com.fleeesch.miditranslator.element.virtual.controller.led.LedControllerParameter;
+import com.fleeesch.miditranslator.element.virtual.controller.led.LedControllerTrackColor;
 import com.fleeesch.miditranslator.element.virtual.interpreter.*;
+import com.fleeesch.miditranslator.functions.math.Color;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +90,24 @@ public class LaunchpadXMacros {
 
     }
 
+    public static void addPressureControlDoubleTrackColor(String pName, int pPadNumber, String pOscAddress, int pRateMin, int pRateMax, double pValMin, double pValMax, String pOscAddressHard, double pHardValue, double[] pColor, double pPreScale) {
+
+        new InterpreterPressure(pName, pRateMin, pRateMax, pValMin, pValMax);
+        VirtualElement.last.addSource(pads.get(pPadNumber));
+
+        VirtualElement.last.addAction(new SendOscOnPress(1, pOscAddress));
+        VirtualElement.last.addAction(new SendOscDirect(1, pOscAddressHard, pHardValue));
+
+
+        int clr = Color.RgbDoubleToHex(pColor[0], pColor[1], pColor[2]);
+
+        new LedControllerTrackColor("Track Color", Main.deviceDaw.trackData.tracks.get(0), pPreScale, clr);
+        VirtualElement.last.addTarget(ledPads.get(pPadNumber));
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+
+
+    }
+
     //************************************************************
     //      Method : Add Pressure Control
     //************************************************************
@@ -100,6 +121,22 @@ public class LaunchpadXMacros {
         VirtualElement.last.setParameterValue(1, pColor[0], pColor[1], pColor[2]);
 
     }
+
+    public static void addPressureControlTrackColor(String pName, int pPadNumber, String pOscAddress, int pRateMin, int pRateMax, double pValMin, double pValMax, double[] pColor, double pPreScale) {
+
+        new InterpreterPressure(pName, pRateMin, pRateMax, pValMin, pValMax);
+        VirtualElement.last.addSource(pads.get(pPadNumber));
+        VirtualElement.last.addAction(new SendOscOnPress(1, pOscAddress));
+
+        int clr = Color.RgbDoubleToHex(pColor[0], pColor[1], pColor[2]);
+
+        new LedControllerTrackColor("Track Color", Main.deviceDaw.trackData.tracks.get(0), pPreScale, clr);
+        VirtualElement.last.addTarget(ledPads.get(pPadNumber));
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
+
+
+    }
+
 
     //************************************************************
     //      Method : Add Hold Control Button
@@ -152,6 +189,20 @@ public class LaunchpadXMacros {
         VirtualElement.last.addTarget(pLed);
         VirtualElement.last.addAction(new SendOscOnPress(1, pOscAddress));
         VirtualElement.last.setParameterValue(1, pColor[0], pColor[1], pColor[2]);
+
+    }
+
+    public static void addSimpleControlButtonTrackColor(String pName, InputElement pButton, OutputElement pLed, String pOscAddress, double[] pColor, double pPreScale) {
+
+        new InterpreterDirect(pName);
+        VirtualElement.last.addSource(pButton);
+        VirtualElement.last.addAction(new SendOscOnPress(1, pOscAddress));
+
+        int clr = Color.RgbDoubleToHex(pColor[0], pColor[1], pColor[2]);
+
+        new LedControllerTrackColor("Track Color", Main.deviceDaw.trackData.tracks.get(0), pPreScale, clr);
+        VirtualElement.last.addTarget(pLed);
+        ((LedControllerTrackColor) VirtualElement.last).setColor();
 
     }
 

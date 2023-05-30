@@ -316,7 +316,7 @@ public class FaderPort8Macros {
                 for (int i = 0; i < 2; i++) {
 
                     Condition.add(pBankExtension, i);
-                    new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(b + (8 * i)), 1, 0x706A60);
+                    new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(b + (8 * i)), 1, 0x6A5A39);
                     VirtualElement.last.addTarget(pButtonSelectLed.get(b));
                     ((LedControllerTrackColor) VirtualElement.last).setColor();
                     Condition.back();
