@@ -668,10 +668,8 @@ public class FaderPort8 extends Device {
 
         Condition.set(shiftOn);
 
-        // Toggle Track FX Bypass
-        FaderPort8Macros.addFeedbackButton("Toggle Track FX Bypass", buttonTouch, ledButtonTouch, 1, OscAddress.trackToggleFXBypass, 0x7F3000);
-        // Toggle Focused FX Bypass
-        FaderPort8Macros.addFeedbackButton("Toggle FX Bypass", buttonWrite, ledButtonWrite, 0, OscAddress.fxToggleBypass, 0x7F3000);
+        // Toggle Preset Sync
+        FaderPort8Macros.addFeedbackButton("Preset Sync", buttonAll, ledButtonAll, 0, OscAddress.presetSync, 0x20207F);
 
         Condition.clear();
 
@@ -767,6 +765,8 @@ public class FaderPort8 extends Device {
 
         // --- Toggle Indexing by Selection ---
 
+        Condition.set(shiftOff);
+
         new InterpreterDirect("Track Indexing");
         VirtualElement.last.addSource(buttonAll);
         VirtualElement.last.addTarget(ledButtonAll);
@@ -774,9 +774,9 @@ public class FaderPort8 extends Device {
         VirtualElement.last.linkToFeedback(Osc.DawArrange, OscAddress.indexTracksBySelection);
         VirtualElement.last.setParameterValue(0, Color.HexToRgbDouble(0x704A00)[0], Color.HexToRgbDouble(0x704A00)[1], Color.HexToRgbDouble(0x704A00)[2], 1);
 
-        // ::: Shift Off :::
+        Condition.clear();
 
-        Condition.set(shiftOff);
+        // ::: Shift Off :::
 
         // --- Previous 8 Tracks ---
         new InterpreterDirect("Previous 8 Track");
@@ -797,8 +797,6 @@ public class FaderPort8 extends Device {
         VirtualElement.last.setParameterValue(1, Color.HexToRgbDouble(0x7F3000)[0]);
         VirtualElement.last.setParameterValue(2, Color.HexToRgbDouble(0x7F3000)[1]);
         VirtualElement.last.setParameterValue(3, Color.HexToRgbDouble(0x7F3000)[2]);
-
-        Condition.clear();
 
         // ::: Shift On :::
 
@@ -862,7 +860,6 @@ public class FaderPort8 extends Device {
         // ::: Shift Off :::
 
         // Select Track
-        Condition.set(shiftOff);
         Condition.add(panEncoderPush, 0);
         new InterpreterDirect("Track Select");
         VirtualElement.last.addSource(encoderPan);
@@ -871,21 +868,10 @@ public class FaderPort8 extends Device {
         Condition.clear();
 
         // Select Track (keep Selection)
-        Condition.set(shiftOff);
         Condition.add(panEncoderPush, 1);
         new InterpreterDirect("Track Select (Keep)");
         VirtualElement.last.addSource(encoderPan);
         VirtualElement.last.addAction(new SendOscRelative2(1, OscAddress.trackAddRelative));
-        ((SendOscRelative) Action.last).rescale(0.25, 0.005);
-        Condition.clear();
-
-        // ::: Shift On :::
-
-        // Select Envelope
-        Condition.set(shiftOn);
-        new InterpreterDirect("Select Envelope");
-        VirtualElement.last.addSource(encoderPan);
-        VirtualElement.last.addAction(new SendOscRelative2(1, OscAddress.automationSelectTrackEnvelopeRelative));
         ((SendOscRelative) Action.last).rescale(0.25, 0.005);
         Condition.clear();
 
@@ -904,7 +890,7 @@ public class FaderPort8 extends Device {
         // MIDI 14-Bit Toggle
         FaderPort8Macros.addParameterToggleSwitch(midi14Bit, buttonBus, ledButtonBus, 0x207020, true);
 
-        // Peal Mode
+        // Pedal Mode
         FaderPort8Macros.addParameterToggleSwitch(pedalMode, buttonVCA, ledButtonVCA, 0x20107F);
 
         Condition.clear();
@@ -913,18 +899,14 @@ public class FaderPort8 extends Device {
         //          Fader Mode
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-        // :: Mix
-        FaderPort8Macros.addFaderModeButtonSet(shift, "Mix", faderMode, 1, buttonPan, ledButtonPan, 0, OscAddress.faderModeMix);
-        // :: Track
-        FaderPort8Macros.addFaderModeButtonSet(shift, "Track", faderMode, 2, buttonSends, ledButtonSends, 0, OscAddress.faderModeTrack);
+        // :: Mix / Track
+        FaderPort8Macros.addFaderModeButtonSetDouble(shift, "Mix", faderMode, 1, 2, buttonPan, ledButtonPan, 0, OscAddress.faderModeMix);
         // :: Preset
         FaderPort8Macros.addFaderModeButtonSet(shift, "Preset", faderMode, 5, buttonEditPlugins, ledButtonEditPlugins, 0, OscAddress.faderModePreset);
-        // :: FX
-        FaderPort8Macros.addFaderModeButtonSet(shift, "FX", faderMode, 3, buttonTrack, ledButtonTrack, 0, OscAddress.faderModeFX);
         // :: Free
-        FaderPort8Macros.addFaderModeButtonSet(shift, "Free", faderMode, 0, buttonAudio, ledButtonAudio, 0x007F30, OscAddress.faderModeFree);
+        FaderPort8Macros.addFaderModeButtonSet(shift, "Free", faderMode, 0, buttonSends, ledButtonSends, 0, OscAddress.faderModeFree);
         // :: MIDI
-        FaderPort8Macros.addFaderModeButtonSet(shift, "Midi", faderMode, 4, buttonVI, ledButtonVI, 0x007F30, OscAddress.faderModeMidi);
+        FaderPort8Macros.addFaderModeButtonSet(shift, "Midi", faderMode, 4, buttonTrack, ledButtonTrack, 0, OscAddress.faderModeMidi);
 
 
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -938,8 +920,6 @@ public class FaderPort8 extends Device {
         FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Track", faderMode, 2, trackModeBank, buttonSelect, ledButtonSelect, 0x30007F, 0, true);
         // :: Preset
         FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Preset", faderMode, 5, presetModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0, false);
-        // :: FX
-        FaderPort8Macros.addBankSelectSet(bankExtension, shift, "FX", faderMode, 3, fxModeBank, buttonSelect, ledButtonSelect, 0x00007F, 0, false);
         // :: Free
         FaderPort8Macros.addBankSelectSet(bankExtension, shift, "Free", faderMode, 0, freeModeBank, buttonSelect, ledButtonSelect, 0x007F30, 0, false);
         // :: MIDI
@@ -1029,15 +1009,15 @@ public class FaderPort8 extends Device {
 
         // Bypass Touch Data Button
         mf.addTouchGlobal(new MfcMulti("Fader Touch Bypass Global", mf, true, true));
-        VirtualElement.last.addSource(buttonBypass);
-        VirtualElement.last.addTarget(ledButtonBypass);
+        VirtualElement.last.addSource(buttonAudio);
+        VirtualElement.last.addTarget(ledButtonAudio);
         VirtualElement.last.setParameterValue(1, 0.5, 0, 1);
 
         // Fader Freeze Button
         mf.addFreezeGlobal(new MfcMulti("Fader Freeze Global", mf, true));
-        VirtualElement.last.addSource(buttonMacro);
-        VirtualElement.last.addTarget(ledButtonMacro);
-        VirtualElement.last.setParameterValue(1, 0.5, 0, 1);
+        VirtualElement.last.addSource(buttonVI);
+        VirtualElement.last.addTarget(ledButtonVI);
+        VirtualElement.last.setParameterValue(1, 0.6, 0, 1);
 
 
         Condition.clear();
@@ -1055,8 +1035,6 @@ public class FaderPort8 extends Device {
             FaderPort8Macros.addFaderSetTrack(bankExtension, OscAddress.trackAddress, OscAddress.faderMix, fader, "Fader Track", b, faderMode, 2, trackModeBank);
             // Preset
             FaderPort8Macros.addFaderSet(bankExtension, OscAddress.faderPreset, fader, "Fader Preset", b, faderMode, 5, presetModeBank);
-            // FX
-            FaderPort8Macros.addFaderSet(bankExtension, OscAddress.faderFx, fader, "Fader FX", b, faderMode, 3, fxModeBank);
             // Free
             FaderPort8Macros.addFaderSet(bankExtension, OscAddress.faderFree, fader, "Fader Free", b, faderMode, 0, freeModeBank);
             // Midi

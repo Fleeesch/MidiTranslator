@@ -198,6 +198,53 @@ public class FaderPort8Macros {
 
     }
 
+    //************************************************************
+    //      Method : Add Fader Mode Button Set Double
+    //************************************************************
+
+    public static void addFaderModeButtonSetDouble(Parameter pShift, String pName, Parameter pFaderMode, int pFaderModeNumberA, int pFaderModeNumberB, InputElement pButton, OutputElement pLed, int pColor, int pOscBankValue) {
+
+        double[] rgb = Color.HexToRgbDouble(pColor);
+
+        // button
+        new InterpreterDirect("VE " + pName);
+
+        ParameterToggle pToggle;
+
+        VirtualElement.last.addSource(pButton);
+        VirtualElement.last.addAction(pToggle = new ParameterToggle(pFaderMode, pFaderModeNumberB, pFaderModeNumberA));
+        VirtualElement.last.addAction(new SendOscOnPress(0, OscAddress.faderMode, pOscBankValue));
+
+        pToggle.rememberState();
+
+        // led
+        Condition.add(pFaderMode, pFaderModeNumberA);
+
+        new InterpreterDirect("VE + " + pName + " LED");
+        VirtualElement.last.addTarget(pLed);
+
+        // rgb color case (with dimmed light)
+
+        if (pColor != 0) {
+
+            VirtualElement.last.setParameterValue(0, rgb[0], rgb[1], rgb[2]);
+
+            Condition.back();
+
+            Condition.add(pFaderMode, pFaderModeNumberA, 1);
+
+            new InterpreterDirect("VE + " + pName + " LED");
+            VirtualElement.last.addTarget(pLed);
+            VirtualElement.last.setParameterValue(0, rgb[0] * 0.1, rgb[1] * 0.1, rgb[2] * 0.1);
+
+            Condition.clear();
+        }
+
+
+        Condition.clear();
+
+    }
+
 
     //************************************************************
     //      Method : Add Parameter Toggle Switch

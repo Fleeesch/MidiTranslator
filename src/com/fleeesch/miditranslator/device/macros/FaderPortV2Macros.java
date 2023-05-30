@@ -135,7 +135,7 @@ public class FaderPortV2Macros {
 
             if (pType.equals("FX 1")) {
 
-                String adr = OscAddress.faderFx + "/" + i;
+                String adr = OscAddress.faderPreset + "/" + i;
 
                 new InterpreterDirect(n);
                 VirtualElement.last.addSource(pFader);
@@ -148,7 +148,7 @@ public class FaderPortV2Macros {
 
             if (pType.equals("FX 2")) {
 
-                String adr = OscAddress.faderFx + "/" + (i + 4);
+                String adr = OscAddress.faderPreset + "/" + (i + 4);
 
                 new InterpreterDirect(n);
                 VirtualElement.last.addSource(pFader);
@@ -275,8 +275,12 @@ public class FaderPortV2Macros {
 
         new InterpreterDirect(pName);
 
+        ParameterToggle pToggle;
+
         VirtualElement.last.addSource(pButton);
-        VirtualElement.last.addAction(new ParameterToggle(pFaderMode, pFaderModeNumberDouble, pFaderModeNumber));
+        VirtualElement.last.addAction(pToggle = new ParameterToggle(pFaderMode, pFaderModeNumberDouble, pFaderModeNumber));
+
+        pToggle.rememberState();
 
         VirtualElement.last.addAction(new SendOscOnPress(0, OscAddress.faderMode, pOscBankValue));
 

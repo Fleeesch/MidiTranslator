@@ -334,6 +334,10 @@ public class FaderPortV2 extends Device {
         // pedal Mode
         Parameter pedalMode = new Parameter("Pedal Mode");
 
+        // preset Sync
+        Parameter presetSync = new Parameter("Preset Sync");
+
+
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
         //          Config
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -353,6 +357,7 @@ public class FaderPortV2 extends Device {
         settings.addParameter(menuMode);
         settings.addParameter(midi14Bit);
         settings.addParameter(pedalMode);
+        settings.addParameter(presetSync);
 
         // allow Parameters to be stored in config
         faderMode.storeInConfig(true);
@@ -369,6 +374,7 @@ public class FaderPortV2 extends Device {
         pedalMode.storeInConfig(true);
         faderBankFx1.storeInConfig(true);
         faderBankFx2.storeInConfig(true);
+        presetSync.storeInConfig(true);
 
 
         //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -616,15 +622,15 @@ public class FaderPortV2 extends Device {
 
         // Toggle Track Envelope Arm
         new InterpreterDirect("Record Arm Track Envelopes");
-        VirtualElement.last.addSource(buttonWrite);
-        VirtualElement.last.addTarget(ledButtonWrite);
+        VirtualElement.last.addSource(buttonRead);
+        VirtualElement.last.addTarget(ledButtonRead);
         VirtualElement.last.setParameterValue(1, 1, 0.1, 0);
         VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.automationArmTrackEnvelopes));
 
         // Write Envelope Data to End of Project
         new InterpreterDirect("Write Envelope Data to End");
-        VirtualElement.last.addSource(buttonRead);
-        VirtualElement.last.addTarget(ledButtonRead);
+        VirtualElement.last.addSource(buttonWrite);
+        VirtualElement.last.addTarget(ledButtonWrite);
         VirtualElement.last.setParameterValue(1, 1, 0.4, 0.25);
         VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.automationWriteToEnd));
 
@@ -741,6 +747,29 @@ public class FaderPortV2 extends Device {
         VirtualElement.last.setParameterValue(1, clrMenu[0], clrMenu[1], clrMenu[2]);
         Condition.back();
 
+        // Preset Sync
+
+        double[] clrSync = {0.3, 0.2, 1};
+
+        Condition.add(menuMode, 0);
+        new InterpreterDirect("Preset Sync Toggle");
+        VirtualElement.last.addSource(buttonChannel);
+        VirtualElement.last.addAction(new ParameterToggle(presetSync, 1));
+        VirtualElement.last.addAction(new SendOscOnPress(0, OscAddress.presetSync));
+        VirtualElement.last.linkToFeedback(Osc.DawArrange, OscAddress.presetSync);
+
+        Condition.add(presetSync, 0);
+        new InterpreterDirect("Preset Sync Toggle LED");
+        VirtualElement.last.addTarget(ledButtonChannel);
+        VirtualElement.last.setParameterValue(1, clrSync[0] * 0.1, clrSync[1] * 0.1, clrSync[2] * 0.1);
+        Condition.back();
+
+        Condition.add(presetSync, 1);
+        new InterpreterDirect("Preset Sync Toggle LED");
+        VirtualElement.last.addTarget(ledButtonChannel);
+        VirtualElement.last.setParameterValue(1, clrSync[0], clrSync[1], clrSync[2]);
+        Condition.back();
+
 
         // Sustain Pedal Mode
 
@@ -805,7 +834,7 @@ public class FaderPortV2 extends Device {
 
         FaderPortV2Macros.addEncoderSet("Project Navigation", encoderPush, encoderMode, 0, OscAddress.gridHalf, OscAddress.gridDouble, OscAddress.jogGrid, OscAddress.zoomHorizontal, 0.2, 0.2);
         FaderPortV2Macros.addEncoderSet("Time Selection", encoderPush, encoderMode, 1, OscAddress.goToPreviousMarker, OscAddress.goToNextMarker, OscAddress.selectionSize, OscAddress.selectionMoveRelative, 0.2, 0.2);
-        FaderPortV2Macros.addEncoderSet("Track Selection", encoderPush, encoderMode, 2, OscAddress.dynamicZoomIn, OscAddress.dynamicZoomOut, OscAddress.trackSelectRelative, OscAddress.automationSelectTrackEnvelopeRelative, 0.2, 0.2);
+        FaderPortV2Macros.addEncoderSet("Track Selection", encoderPush, encoderMode, 2, OscAddress.dynamicZoomIn, OscAddress.dynamicZoomOut, OscAddress.trackSelectRelative, OscAddress.trackAddRelative, 0.2, 0.2);
         FaderPortV2Macros.addEncoderSet("Item Selection", encoderPush, encoderMode, 3, OscAddress.takeSelectPrevious, OscAddress.takeSelectNext, OscAddress.itemSelectRelative, "", 0.2, 0.2);
 
 
