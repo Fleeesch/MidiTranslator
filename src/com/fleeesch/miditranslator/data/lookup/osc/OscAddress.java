@@ -15,7 +15,7 @@ public class OscAddress {
 
     public static final String djAddress = "/dj";
 
-    public static final String[] djDeck = {djAddress + "/0",djAddress + "/1",djAddress + "/2",djAddress + "/3"};
+    public static final String[] djDeck = {djAddress + "/0", djAddress + "/1", djAddress + "/2", djAddress + "/3"};
 
     public static final String djFlipDecks = djAddress + "/flip";
     public static final String djSoftwareUseMidi = djAddress + "/sw_midi";
@@ -46,9 +46,6 @@ public class OscAddress {
     public static final String[] djDeckFader = {djDeck[0] + djFader, djDeck[1] + djFader, djDeck[2] + djFader, djDeck[3] + djFader};
 
     public static final String[] djDeckPlay = {djDeck[0] + djPlay, djDeck[1] + djPlay, djDeck[2] + djPlay, djDeck[3] + djPlay};
-
-
-
 
 
     // --- Control Surface Mixing ---
@@ -110,8 +107,7 @@ public class OscAddress {
     public static final int faderModeFree = 4;
     public static final int faderModeMidi = 5;
 
-
-
+    public static final String presetSync = "/daw/ps/+";
 
 
     // --- Transport ---
