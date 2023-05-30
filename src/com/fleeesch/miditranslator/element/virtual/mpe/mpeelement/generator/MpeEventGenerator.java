@@ -2,6 +2,7 @@ package com.fleeesch.miditranslator.element.virtual.mpe.mpeelement.generator;
 
 import com.fleeesch.miditranslator.element.virtual.mpe.MpeDataHandler;
 import com.fleeesch.miditranslator.element.virtual.mpe.mpeelement.MpeElement;
+import com.fleeesch.miditranslator.functions.math.Calculate;
 
 public class MpeEventGenerator extends MpeElement {
 
@@ -19,8 +20,18 @@ public class MpeEventGenerator extends MpeElement {
     public final int posX;
     public final int posY;
 
-    public double pressure;
+    public double pressure = 0;
     public double velocity;
+
+    private double lastPressure = 0;
+
+    private boolean activeRelease;
+    private double releaseValue = 0;
+    private long releaseMillis = 0;
+
+    private final int offVelocityLow = 300;
+    private final int offVelocityHigh = 50;
+
 
     //************************************************************
     //      Constructor
@@ -52,20 +63,43 @@ public class MpeEventGenerator extends MpeElement {
 
         if (pVal > 0) {
             // create event on press
-            if (mpeSurface.velocityLock) velocity = 1;
-            else velocity = pVal;
+            if (mpeSurface.velocityLock) {
+                velocity = 1;
+            } else {
+                velocity = pVal;
+            }
 
             pressure = pVal;
+
+            storeReleasePoint();
 
             event = mpeSurface.createEvent(this);
 
 
         } else {
+
+            // calculate release velocity
+            double releaseVelocity = Calculate.rescaleValueLimit(System.currentTimeMillis() - releaseMillis, offVelocityLow, offVelocityHigh, 0, releaseValue);
+
             // remove event on release if it exists (can be potentially gone through surface rebuild)
-            if (event != null) mpeSurface.destroyEvent(event);
+            if (event != null) mpeSurface.destroyEvent(event, releaseVelocity);
 
         }
 
+
+    }
+
+    //************************************************************
+    //      Event : Store Release Point
+    //************************************************************
+
+    private void storeReleasePoint() {
+
+        // store pressure value
+        releaseValue = pressure;
+
+        // sture current system time
+        releaseMillis = System.currentTimeMillis();
 
     }
 
@@ -76,7 +110,29 @@ public class MpeEventGenerator extends MpeElement {
     @Override
     public void handleMpeZ(double pVal) {
 
+        // store last pressure value
+        lastPressure = pressure;
+
+        // store current pressure value
         pressure = pVal;
+
+        // pressure goes up = no release motion
+        if (activeRelease && lastPressure < pressure) {
+
+            activeRelease = false;
+
+        }
+
+        // release motion initial trigger
+        if (!activeRelease && lastPressure > pressure) {
+
+            activeRelease = true;
+
+            // store current release data
+            storeReleasePoint();
+
+        }
+
 
         if (noteOutOfRange) return;
 

@@ -395,9 +395,20 @@ public class MpeSurface extends VirtualElement {
     //      Method : Destroy Event
     //************************************************************
 
+    // * * * * * * * * * * * * * * * * * * *
+    // No Release Velocity
     public void destroyEvent(MpeEvent pEvent) {
 
         pEvent.destroy(); // destroy event using its internal self-destruction method
+
+    }
+
+    // * * * * * * * * * * * * * * * * * * *
+    // Release Velocity
+
+    public void destroyEvent(MpeEvent pEvent, double pReleaseVelocity) {
+
+        pEvent.destroy(pReleaseVelocity); // destroy event using its internal self-destruction method
 
     }
 

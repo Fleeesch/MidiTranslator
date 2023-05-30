@@ -53,9 +53,11 @@ public class MpeEvent {
     //      Method : Destroy
     //************************************************************
 
-    public void destroy() {
+    // * * * * * * * * * * * * * * * * * * *
+    // Release Velocity
+    public void destroy(double pReleaseVelocity) {
 
-        Main.deviceDaw.midi.SendMessage(128 + channel, note, (int) (velocity * 127)); // send release message (using original velocity for note-off velocity)
+        Main.deviceDaw.midi.SendMessage(128 + channel, note, (int) (pReleaseVelocity * 127)); // send release message (using original velocity for note-off velocity)
 
         creator.mpeSurface.mpeEvents.remove(this); // remove this event from source list
 
@@ -63,6 +65,14 @@ public class MpeEvent {
 
         mpeChannel.active =false;
 
+    }
+
+    // * * * * * * * * * * * * * * * * * * *
+    // No Release Velocity
+    public void destroy() {
+
+        // use original velocity
+        destroy(velocity);
     }
 
 
