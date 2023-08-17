@@ -55,6 +55,8 @@ public class ParameterToggle extends ParameterAction {
 
     public void trigger(double pVal) {
 
+        storeParameterValue();
+
         // don't do anything on release
         if (pVal <= 0) return;
 

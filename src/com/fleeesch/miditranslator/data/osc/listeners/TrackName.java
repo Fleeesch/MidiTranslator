@@ -30,7 +30,11 @@ public class TrackName extends OscListener {
     @Override
     public void acceptMessage(OSCMessageEvent event) {
 
-        targetTrack.inputName(event.getMessage().getArguments().get(0));
+        try {
+            targetTrack.inputName(event.getMessage().getArguments().get(0));
+        } catch (Exception e) {
+            return;
+        }
 
     }
 }

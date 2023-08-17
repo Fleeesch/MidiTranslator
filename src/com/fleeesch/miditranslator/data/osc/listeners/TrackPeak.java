@@ -30,7 +30,11 @@ public class TrackPeak extends OscListener {
     @Override
     public void acceptMessage(OSCMessageEvent event) {
 
-        targetTrack.inputPeak(event.getMessage().getArguments().get(0));
+        try {
+            targetTrack.inputPeak(event.getMessage().getArguments().get(0));
+        } catch (Exception e) {
+            return;
+        }
 
 
     }

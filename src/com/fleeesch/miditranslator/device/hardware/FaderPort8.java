@@ -654,7 +654,7 @@ public class FaderPort8 extends Device {
         VirtualElement.last.addTarget(ledButtonRecord);
         VirtualElement.last.addAction(new SendOscDirect(1, OscAddress.trackBounceStereo));
         VirtualElement.last.addAction(new SendOscDirect(1, OscAddress.trackBounceStereo2ndPass));
-        Condition.clear();
+
 
 
         // Auto-Scroll (Feedback)
@@ -783,7 +783,7 @@ public class FaderPort8 extends Device {
 
         new InterpreterDirect("Previous 8 Track");
         VirtualElement.last.addSource(buttonBypass);
-        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 - 0.065));
+        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackFolderScroll8Left, 1));
 
         Condition.add(bankExtension, 0);
         new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(0), 1, 0x6A5A39);
@@ -800,9 +800,9 @@ public class FaderPort8 extends Device {
 
         // --- Next 8 Tracks ---
 
-        new InterpreterDirect("Previous 8 Track");
+        new InterpreterDirect("Next 8 Track");
         VirtualElement.last.addSource(buttonMacro);
-        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackSelectRelative, 0.5 + 0.065));
+        VirtualElement.last.addAction(new SendOscOnPress(1, OscAddress.trackFolderScroll8Right, 1));
 
         Condition.add(bankExtension, 0);
         new LedControllerTrackColor("Bank LED", Main.deviceDaw.trackData.tracks.get(0), 1, 0x6A5A39);

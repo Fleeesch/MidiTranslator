@@ -2,12 +2,13 @@ package com.fleeesch.miditranslator.action.parameter;
 
 import com.fleeesch.miditranslator.data.parameter.Parameter;
 
-
-public class ParameterSetReturn extends ParameterAction {
+public class ParameterReturn extends ParameterAction {
 
     //************************************************************
     //      Variables
     //************************************************************
+
+    ParameterAction action; // reference Action
 
     //************************************************************
     //      Constructor
@@ -15,21 +16,13 @@ public class ParameterSetReturn extends ParameterAction {
 
 
     //* * * * * * * * * * * * * * * * * * * * * * * *
-    //  Single Value
+    //  Parameter Action Reference
 
-    public ParameterSetReturn(Parameter pActionParameter, double pVal) {
+    public ParameterReturn(ParameterAction pActionParameter){
 
-        super(pActionParameter, pVal);
+        super(pActionParameter.parameter);
 
-
-    }
-
-    //* * * * * * * * * * * * * * * * * * * * * * * *
-    //  Multi Value
-
-    public ParameterSetReturn(Parameter pActionParameter, double... pVal) {
-
-        super(pActionParameter, pVal);
+        action = pActionParameter;
 
     }
 
@@ -43,26 +36,9 @@ public class ParameterSetReturn extends ParameterAction {
 
     public void trigger(double pVal) {
 
-        storeParameterValue();
+        // restore last parameter value of linked action
+        action.restoreParameterValue();
 
-        // check if more than one target value has been declared
-        if (setValues.size() > 1) {
-
-            // if so, use both on a set and return
-            if (pVal > 0)
-                parameter.set(setValues.get(1));
-            else
-                parameter.set(setValues.get(0));
-
-        } else {
-
-            // use target value on press, 0 on release
-            if (pVal > 0)
-                parameter.set(setValues.get(0));
-            else
-                parameter.set(0);
-
-        }
 
     }
 

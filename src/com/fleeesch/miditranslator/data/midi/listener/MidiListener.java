@@ -38,18 +38,22 @@ public class MidiListener implements Receiver {
 
     public void send(MidiMessage msg, long timeStamp) {
 
-        // get message, init int array
-        byte[] mIn = msg.getMessage();
-        int[] mOut = new int[mIn.length];
+        try {
+            // get message, init int array
+            byte[] mIn = msg.getMessage();
+            int[] mOut = new int[mIn.length];
 
-        // transfer message to int array
-        for (int i = 0; i < mIn.length; i++) mOut[i] = mIn[i];
+            // transfer message to int array
+            for (int i = 0; i < mIn.length; i++) mOut[i] = mIn[i];
 
-        // byte 1 fix
-        mOut[0] &= 0xFF;
+            // byte 1 fix
+            mOut[0] &= 0xFF;
 
-        // send message to Midi instance
-        linkMidi.incomingMidiMessage(mOut);
+            // send message to Midi instance
+            linkMidi.incomingMidiMessage(mOut);
+        } catch (Exception e) {
+            return;
+        }
 
     }
 

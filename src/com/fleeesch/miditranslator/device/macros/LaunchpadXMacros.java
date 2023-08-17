@@ -1,13 +1,12 @@
 package com.fleeesch.miditranslator.device.macros;
 
 import com.fleeesch.miditranslator.Main;
+import com.fleeesch.miditranslator.action.Action;
 import com.fleeesch.miditranslator.action.ActionBlind;
 import com.fleeesch.miditranslator.action.midi.SendMidiDirect;
 import com.fleeesch.miditranslator.action.osc.SendOscDirect;
 import com.fleeesch.miditranslator.action.osc.SendOscOnPress;
-import com.fleeesch.miditranslator.action.parameter.ParameterIncrement;
-import com.fleeesch.miditranslator.action.parameter.ParameterSet;
-import com.fleeesch.miditranslator.action.parameter.ParameterToggle;
+import com.fleeesch.miditranslator.action.parameter.*;
 import com.fleeesch.miditranslator.data.midi.Midi;
 import com.fleeesch.miditranslator.data.osc.Osc;
 import com.fleeesch.miditranslator.data.parameter.Parameter;
@@ -344,20 +343,22 @@ public class LaunchpadXMacros {
         Condition.clear();
 
         // Menu Call : Daw Control
-        new InterpreterDirect("Set Menu Tracking");
+        new InterpreterLatch("Set Menu Tracking");
         VirtualElement.last.addSource(buttons.get(4));
         VirtualElement.last.addAction(new ParameterSet(view, 0));
+        VirtualElement.last.addAction(new ParameterReturn((ParameterAction)Action.last));
 
         // Menu Call : Mpe Surface / Mpe Settings
         new InterpreterLatch("Set Menu MPE");
         VirtualElement.last.addSource(buttons.get(5));
         VirtualElement.last.addAction(new ParameterToggle(view, 2, 1));
-        VirtualElement.last.addAction(new ParameterSet(view, 1));
+        VirtualElement.last.addAction(new ParameterReturn((ParameterAction)Action.last));
 
         // Menu Call : Trigger Pads
-        new InterpreterDirect("Set Menu Trigger Pads");
+        new InterpreterLatch("Set Menu Trigger Pads");
         VirtualElement.last.addSource(buttons.get(6));
         VirtualElement.last.addAction(new ParameterToggle(view, 4, 3));
+        VirtualElement.last.addAction(new ParameterReturn((ParameterAction)Action.last));
 
         // LED : Daw Control
         new LedControllerParameter("Led : Daw Control", view, 0);

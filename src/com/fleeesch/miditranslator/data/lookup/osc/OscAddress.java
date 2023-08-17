@@ -179,6 +179,12 @@ public class OscAddress {
     public static final String trackSelectNext = "/daw/trk/sel/+";
     public static final String trackSelectPrevious = "/daw/trk/sel/-";
 
+    public static final String trackFolderScrollRelative = "/daw/trk/fld_src/r";
+    public static final String trackFolderScroll8Left = "/daw/trk/fld_src/8/-";
+    public static final String trackFolderScroll8Right = "/daw/trk/fld_src/8/+";
+    public static final String trackFolderScroll16Left = "/daw/trk/fld_src/16/-";
+    public static final String trackFolderScroll16Right = "/daw/trk/fld_src/16/+";
+
     public static final String trackAddRelative = "/daw/trk/seladd/r";
     public static String trackAddNext = "/daw/trk/seladd/+";
     public static String trackAddPrevious = "/daw/trk/seladd/-";

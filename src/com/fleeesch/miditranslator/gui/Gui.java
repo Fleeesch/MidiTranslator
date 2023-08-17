@@ -203,7 +203,7 @@ public class Gui {
         //!! currently using a dictated path, not flexible
         // try to get path
         try {
-            return new File("c:\\root\\int\\ide\\intellij\\proj\\java\\MidiTranslator\\out\\artifacts\\Main_jar");
+            return new File("c:\\root\\int\\development\\java\\MidiTranslator\\out\\artifacts\\Main_jar");
         } catch (Exception e) {
             return null;
         }

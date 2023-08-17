@@ -45,6 +45,8 @@ public class ParameterSet extends ParameterAction {
 
     public void trigger(double pVal) {
 
+        storeParameterValue();
+
         // don't do anything on button release
         if (pVal <= 0) return;
 

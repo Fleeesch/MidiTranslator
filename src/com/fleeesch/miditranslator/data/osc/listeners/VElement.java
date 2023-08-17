@@ -38,10 +38,19 @@ public class VElement extends OscListener {
         // skip devices that are disabled
         if (!device.enabledState) return;
 
-        // convert and store message as float
+        float f;
 
-        float f = (float) event.getMessage().getArguments().get(0);
+        try {
 
+            // convert and store message as float
+
+            f = (float) event.getMessage().getArguments().get(0);
+
+
+        } catch (Exception e) {
+            return;
+
+        }
         // convert it back to double
         targetElement.handleSoftwareInput(f);
 

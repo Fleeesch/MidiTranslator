@@ -30,7 +30,11 @@ public class FxName extends OscListener {
     @Override
     public void acceptMessage(OSCMessageEvent event) {
 
-        targetFx.inputName(event.getMessage().getArguments().get(0));
+        try {
+            targetFx.inputName(event.getMessage().getArguments().get(0));
+        } catch (Exception e) {
+            return;
+        }
 
     }
 }

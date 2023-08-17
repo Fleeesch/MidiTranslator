@@ -30,7 +30,11 @@ public class TrackIndex extends OscListener {
     @Override
     public void acceptMessage(OSCMessageEvent event) {
 
-        targetTrack.inputIndex(event.getMessage().getArguments().get(0));
+        try {
+            targetTrack.inputIndex(event.getMessage().getArguments().get(0));
+        } catch (Exception e) {
+            return;
+        }
 
 
     }

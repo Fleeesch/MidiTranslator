@@ -21,6 +21,9 @@ public abstract class ParameterAction extends Action {
     // multiple values can be used for auto-generated combinations
     final List<Double> setValues = new ArrayList<>();
 
+    protected Parameter parameterLast;
+    protected double parameterLastValue;
+
     //************************************************************
     //      Constructor
     //************************************************************
@@ -67,6 +70,25 @@ public abstract class ParameterAction extends Action {
 
     }
 
+    //************************************************************
+    //      Method: Store Parameter
+    //************************************************************
+
+    public void storeParameterValue(){
+
+        parameterLastValue = parameter.get();
+    }
+
+
+    //************************************************************
+    //      Method: Restore Parameter
+    //************************************************************
+
+    public void restoreParameterValue(){
+
+        parameter.set(parameterLastValue);
+
+    }
 
 
 }

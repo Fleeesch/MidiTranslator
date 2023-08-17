@@ -32,6 +32,9 @@ public class FP8DisplayController extends DisplayController {
     public final Timer updateTimer;
     public final ActionListener updateTask;
 
+    // indicator that display update is currently going
+    private boolean doUpdate = false;
+
     // parameter hashmap
 
     public final List<Parameter> parameters = new ArrayList<>();
@@ -48,9 +51,13 @@ public class FP8DisplayController extends DisplayController {
     public int midiBank = 0;
 
     // last display mode (preventing unnecessary redraws)
-    private int menu = -1;
+    public int menu = -1;
+
+
 
     private final int maxCharacters = 5;
+
+    private final int displayUpdateDelay = 100;
 
     // mix labels
     final String[] labelsMix = {"Volume", "Pan", "Width", "Send 1", "Send 2", "Send 3", "Send 4", "Send 5"};
@@ -83,7 +90,7 @@ public class FP8DisplayController extends DisplayController {
         updateTask = evt -> update();
 
         // setup timer for display output
-        updateTimer = new Timer(150, updateTask);
+        updateTimer = new Timer(displayUpdateDelay, updateTask);
         updateTimer.setRepeats(false);
 
         // set display mode to 2, clear all display data
@@ -117,6 +124,9 @@ public class FP8DisplayController extends DisplayController {
     //************************************************************
 
     public void update() {
+
+
+        doUpdate = false; // update is starting, lower flag
 
         storeData(); // transfer data from parameters
 
@@ -169,6 +179,14 @@ public class FP8DisplayController extends DisplayController {
 
 
         }
+
+        // display update query triggered during update? update again...
+        if(doUpdate){
+            update();
+        }
+
+
+
 
     }
 
@@ -341,9 +359,11 @@ public class FP8DisplayController extends DisplayController {
 
     public void queryDisplayUpdate() {
 
+        // mark that update is about to be started
+        doUpdate = true;
+
         // restart timer
-        updateTimer.stop();
-        updateTimer.start();
+        updateTimer.restart();
 
     }
 
